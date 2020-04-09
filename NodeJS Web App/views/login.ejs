@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title><%= title %></title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="stylesheets/bootstrap.min.css">
+        <script src="javascripts/jquery.min.js"></script>
+        <script src="javascripts/bootstrap.min.js"></script>
+        <script src="/javascripts/database.js"></script>
+        <script src="/javascripts/idb.js"></script>
+        <script src="/javascripts/app.js"></script>
+    </head>
+    <body onload= "initIntelligentWeb()">
+        <div class="form-group">
+        <h1>Welcome to <%= title %></h1>
+        <form action="/login" method="POST" onsubmit="onLogin()">
+            Account:<br>
+            <input type="text" class="form-control" name="username"><br>
+            Password:<br>
+            <input type="password" class="form-control" name="password"><br>
+            <button type="submit" class="btn btn-primary">Log in</button>
+        </form>
+            <br>
+            <a href="/register" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Register</a>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,18 @@
+<div class="card" style="width: 100%;">
+    <div class="crop">
+        <img onclick="enlarge(event)" onerror="this.src='/images/music.jpg';" src="/uploads/<%= event.imagePath %>" class="cursor-pointer card-img-top" alt="...">
+    </div>
+    <div class="card-body">
+        <p class="card-text">
+            <%= event.intro %>
+        </p>
+    </div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item"><%= event.name %></li>
+        <li class="list-group-item">Location: <%= event.address %>
+        <div><small class="utc-time" data-time="<%= event.createdAt.toISOString() %>"></small></div></li>
+    </ul>
+    <div class="card-body">
+        <a href="/event/item/<%= event._id %>" class="card-link">Look up</a>
+    </div>
+</div>

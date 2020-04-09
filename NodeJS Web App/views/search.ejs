@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" href="stylesheets/style.css">
+    <script src="/javascripts/popper.min.js"></script>
+    <script src="/javascripts/jquery.min.js"></script>
+    <script src="/javascripts/bootstrap.min.js"></script>
+    <script src="/javascripts/database.js"></script>
+    <script src="/javascripts/idb.js"></script>
+    <script src="/javascripts/app.js"></script>
+</head>
+<body>
+<div class="input-group mb-3">
+    <div class="input-group-prepend">
+        <select onchange="changeSelect()" class="custom-select" id="select"
+                aria-label="Example select with button addon">
+            <option selected value="event">Event</option>
+            <option value="date">Date</option>
+        </select>
+    </div>
+    <input id="searchText" type="text" class="form-control" aria-label="Text input with dropdown button" name="search">
+
+    <input id="fromDate" type="date" class="form-control" aria-label="Text input with dropdown button"
+           name="fromDate" style="display: none">
+    <input id="toDate" type="date" class="form-control" aria-label="Text input with dropdown button"
+           name="fromDate" style="display: none">
+    <button onClick="search()" class="btn btn-outline-secondary" type="submit">Search</button>
+</div>
+
+<nav class="navbar fixed-bottom navbar-light bg-light">
+    <a class="navbar-brand" href="create">
+        <img src="/images/plus.png" width="30" height="30" alt="">
+    </a>
+    <a class="navbar-brand" href="search">
+        <img src="/images/search.png" width="30" height="30" alt="">
+    </a>
+    <a class="navbar-brand" href="/home">
+        <img src="/images/home.png" width="40" height="40" alt="">
+    </a>
+    <a class="navbar-brand" href="map">
+        <img src="/images/calandar.png" width="30" height="30" alt="">
+    </a>
+    <a class="navbar-brand" href="profile">
+        <img src="/images/profile.png" width="30" height="30" alt="">
+    </a>
+</nav>
+<div class="container mb-5 pb-5" id="container">
+</div>
+
+<script>
+    function search() {
+        let e1 = document.querySelector('#select');
+        let select = e1.options[e1.selectedIndex].value;
+        let e2 = document.querySelector('#searchText');
+        let e3 = document.querySelector('#fromDate');
+        let e4 = document.querySelector('#toDate');
+
+        let url = '';
+        if (select === 'event') {
+            url = `/event/search?${select}=${e2.value}`;
+        } else if (select === 'date') {
+            url = `/event/search?fromDate=${e3.value}&toDate=${e4.value}`;
+        }
+        console.log(url);
+        searchAPI(url);
+    }
+
+    function changeSelect() {
+        let e1 = document.querySelector('#select');
+        let select = e1.options[e1.selectedIndex].value;
+
+        let e2 = document.querySelector('#searchText');
+        let e3 = document.querySelector('#fromDate');
+        let e4 = document.querySelector('#toDate');
+        if (select === 'date') {
+            e2.style.display = 'none';
+            e3.style.display = 'inline';
+            e4.style.display = 'inline';
+        } else if (select === 'event') {
+            e2.style.display = 'inline';
+            e3.style.display = 'none';
+            e4.style.display = 'none';
+        }
+    }
+</script>
+</body>
+</html>

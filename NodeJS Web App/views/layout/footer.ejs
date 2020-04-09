@@ -1,0 +1,10 @@
+<script>(function () {
+        let es = document.querySelectorAll('.utc-time');
+        es.forEach(e => {
+            let d = new Date(e.getAttribute('data-time'));
+            e.innerText = d.toLocaleString();
+        });
+    })();
+</script>
+</body>
+</html>

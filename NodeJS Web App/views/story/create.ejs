@@ -1,0 +1,38 @@
+<%- include('../layout/header'); %>
+<div class="container mb-5 pb-5">
+    <h1 class="createH">Create your story</h1>
+    <br>
+    <% if (message) { %>
+    <div class="alert alert-primary" role="alert">
+        <%= message %>
+    </div>
+    <% } %>
+
+    <form method="POST" enctype="multipart/form-data">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Event</span>
+            </div>
+            <input class="form-control" type="text" value="<%= event.name %>" disabled>
+        </div>
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">content</span>
+            </div>
+            <textarea required name="content" class="form-control" aria-label="content"></textarea>
+        </div>
+
+        <div class="input-group mb-3">
+            <div class="custom-file">
+                <input name="image" type="file" class="custom-file-input" id="inputGroupFile02">
+                <label class="custom-file-label" for="inputGroupFile02">Choose file</label>
+            </div>
+        </div>
+
+        <div class="input-group mb-3">
+            <button type="submit" class="btn btn-outline-success btn-block btn-lg">Send</button>
+        </div>
+    </form>
+</div>
+<%- include('../layout/footer'); %>

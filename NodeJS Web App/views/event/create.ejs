@@ -1,0 +1,49 @@
+<%- include('../layout/header'); -%>
+<div class="container mb-5 pb-5">
+    <div class="col-sm-8 offset-sm-2">
+    <%if (message) { %>
+        <div class="alert alert-primary" role="alert">
+         <%= message %>
+        </div>
+    <% } %>
+        <h1 class="createH">Create an event</h1>
+        <br>
+
+        <form method="POST" action="/event/create" enctype="multipart/form-data">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Name</span>
+            </div>
+            <input type="text" name="eventName" class="form-control">
+        </div>
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Intro</span>
+            </div>
+            <textarea name="eventIntro" class="form-control" aria-label="content"></textarea>
+        </div>
+
+        <div class="input-group mb-3">
+          <div class="custom-file">
+            <input name="image" type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
+            <label class="custom-file-label" for="inputGroupFile01">Choose file...</label>
+          </div>
+        </div>
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Location</span>
+            </div>
+            <input id="location" name="address" type="text" class="form-control" readonly>
+            <input id="lat" name="lat" type="text" style="display: none">
+            <input id="lng" name="lng" type="text" style="display: none">
+        </div>
+        <%- include('../mapper'); %>
+        <div class="input-group mb-3">
+            <button type="submit" class="btn btn-outline-success btn-lg btn-block">Submit</button>
+        </div>
+        </form>
+    </div>
+</div>
+<%- include('../layout/footer'); -%>

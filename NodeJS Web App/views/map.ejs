@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Places Search Box</title>
+    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" href="/stylesheets/map.css">
+    <script src="/javascripts/jquery.min.js"></script>
+    <script src="/javascripts/bootstrap.min.js"></script>
+    <script src="/javascripts/database.js"></script>
+    <script src="/javascripts/idb.js"></script>
+    <script src="/javascripts/app.js"></script>
+</head>
+<body>
+<nav class="navbar fixed-bottom navbar-light bg-light">
+    <a class="navbar-brand" href="create">
+        <img src="/images/plus.png" width="30" height="30" alt="">
+    </a>
+    <a class="navbar-brand" href="search">
+        <img src="/images/search.png" width="30" height="30" alt="">
+    </a>
+    <a class="navbar-brand" href="/home">
+        <img src="/images/home.png" width="40" height="40" alt="">
+    </a>
+    <a class="navbar-brand" href="map">
+        <img src="/images/calandar.png" width="30" height="30" alt="">
+    </a>
+    <a class="navbar-brand" href="profile">
+        <img src="/images/profile.png" width="30" height="30" alt="">
+    </a>
+</nav>
+
+<div class="container">
+    <h1 class="text-center">Search events via map</h1>
+    <input id="location" name="address" type="text" class="form-control" hidden>
+    <input id="lat" name="lat" type="text" style="display: none">
+    <input id="lng" name="lng" type="text" style="display: none">
+</div>
+
+<div class="container">
+    <div id="pac-container" class="pac-card">
+        <div class="pac-controls">
+            <label for="pac-input">Location</label>
+            <input id="pac-input" class="pac-controls" type="text" placeholder="Search Box">
+        </div>
+        <div id="map"></div>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCeaaUgedTobd_fyuMWTB2PrbIy_nweZeY&libraries=places&callback=initAutocomplete"
+                async defer>
+        </script>
+    </div>
+</div>
+
+<div class="container mb-5 pb-5" id="container"></div>
+
+<script>
+    places = [{
+        address: 'The University of Sheffield, 211 Portobello, Sheffield S1 4DP, United Kingdom',
+        lat: 53.381,
+        lng: -1.480,
+    }];
+
+    function updateLocation() {
+        let lat = places[places.length - 1].lat;
+        let lng = places[places.length - 1].lng;
+        let url = `/event/search?lat=${lat}&lng=${lng}`;
+        searchAPI(url);
+    }
+
+    function initAutocomplete() {
+        let myLatlng = new google.maps.LatLng(53.381, -1.480);
+        let map = new google.maps.Map(document.getElementById('map'), {
+            center: myLatlng,
+            zoom: 13,
+            mapTypeId: 'roadmap'
+        });
+
+        // Create the search box and link it to the UI element.
+        let input = document.getElementById('pac-input');
+        let searchBox = new google.maps.places.SearchBox(input);
+        // map.controls[google.maps.ControlPosition.TOP_CENTER].push(input);
+
+        // Bias the SearchBox results towards current map's viewport.
+        map.addListener('bounds_changed', function () {
+            searchBox.setBounds(map.getBounds());
+        });
+
+        let markers = [];
+        // Listen for the event fired when the user selects a prediction and retrieve
+        // more details for that place.
+        searchBox.addListener('places_changed', function () {
+            let _places = searchBox.getPlaces();
+
+            if (_places.length == 0) {
+                return;
+            }
+            let last = _places[_places.length - 1];
+            places.push({
+                address: last.formatted_address,
+                lat: last.geometry.location.lat(),
+                lng: last.geometry.location.lng(),
+            });
+            updateLocation();
+
+            // Clear out the old markers.
+            markers.forEach(function (marker) {
+                marker.setMap(null);
+            });
+            markers = [];
+
+            // For each place, get the icon, name and location.
+            var bounds = new google.maps.LatLngBounds();
+            _places.forEach(function (place) {
+                if (!place.geometry) {
+                    console.log('Returned place contains no geometry');
+                    return;
+                }
+                var icon = {
+                    url: place.icon,
+                    size: new google.maps.Size(71, 71),
+                    origin: new google.maps.Point(0, 0),
+                    anchor: new google.maps.Point(17, 34),
+                    scaledSize: new google.maps.Size(25, 25)
+                };
+
+                // Create a marker for each place.
+                markers.push(new google.maps.Marker({
+                    map: map,
+                    icon: icon,
+                    title: place.name,
+                    position: place.geometry.location
+                }));
+
+                if (place.geometry.viewport) {
+                    // Only geocodes have viewport.
+                    bounds.union(place.geometry.viewport);
+                } else {
+                    bounds.extend(place.geometry.location);
+                }
+            });
+            map.fitBounds(bounds);
+        });
+
+        let marker = new google.maps.Marker({
+            position: myLatlng,
+            map: map,
+            title: 'Here!!'
+        });
+        let infoWindow = new google.maps.InfoWindow({
+            content: 'I work at the Department of Computer Science, The University of Sheffield',
+            maxWidth: 200
+        });
+        google.maps.event.addListener(marker, 'click', function () {
+            console.log(map);
+            console.log(marker);
+            infoWindow.open(map, marker);
+        });
+
+        updateLocation();
+    }
+
+    var container = document.querySelector('#container');
+
+
+</script>
+
+
+</body>
+</html>

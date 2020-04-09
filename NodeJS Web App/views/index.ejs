@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+    <script src="/javascripts/jquery.min.js"></script>
+    <script src="/javascripts/bootstrap.min.js"></script>
+    <script src="/javascripts/database.js"></script>
+    <script src="/javascripts/idb.js"></script>
+    <script src="/javascripts/app.js"></script>
+
+  </head>
+  <body onload="initIntelligentWeb();">
+    <div class="form-group">
+      <h1>Welcome to <%= title %></h1>
+      <p>Please register or login first!</p>
+      <form action="/register" method="POST" onsubmit="onSubmitRegister()">
+        Nickname:<br>
+        <input type="text" class="form-control" name="nickname" id="nickname" required><br>
+        Username:<br>
+        <input type="text" class="form-control" name="username" id="username" required><br>
+        Password:<br>
+        <input type="password" class="form-control" name="password" id="password" required><br>
+        E-mail address:<br>
+        <input type="email" class="form-control" name="email" id="email" required><br>
+        <button type="submit" class="btn btn-primary">Register</button>
+      </form>
+      <br>
+      <a href="login" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Log in</a>
+    </div>
+  </body>
+</html>

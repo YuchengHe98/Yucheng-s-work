@@ -1,0 +1,18 @@
+<div class="col-sm-6 story p-3">
+    <div class="card">
+        <div class="card-body text-left">
+            <h5 class="card-title"><%= story.creator.nickname %>:</h5>
+            <p class="card-text"><%= story.content %>
+                <% if (story.imagePath) { %>
+                <img class="story-img img-thumbnail" onclick="enlarge(event)" src="/uploads/<%= story.imagePath %>"
+                     alt="...">
+                <% } %>
+            <div>
+                <small class="utc-time" data-time="<%= story.createdAt.toISOString() %>"></small>
+            </div>
+            </p>
+            <!--<small class="card-subtitle text-muted"><%= story.createdAt %></small>-->
+            <!--<a href="#" class="btn btn-secondary">Go somewhere</a>-->
+        </div>
+    </div>
+</div>
